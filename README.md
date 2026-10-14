@@ -1,19 +1,16 @@
 # darknavstar-model-router
 
-A pi extension for routing tasks to configured sub-agents without changing the main model.
+A model router on top of pi that automatically evaluates user messages, classifies tasks and provides stable routing, delegating tasks to configured models as sub-agents on every turn.
 
-## Features
+## Core ideas
 
-- **Configured routing:** select child models by category, role, and automatically calculated
-  complexity (`simple`, `medium`, or `hard`). No automatic model substitution.
-- **Isolated execution:** children receive the delegated task, not the parent's conversation history.
-  The parent receives only a receipt and result summary unless it explicitly queries execution records.
-- **Live progress:** inspect child responses and tool activity in the TUI, with expandable history.
-- **Execution controls:** configurable tool permissions, bounded delegation depth, cancellable child
-  processes, and cross-process serialization for coding tasks in the same working directory.
-- **Snapshot replay:** rerun spawns using their original task and configuration while preserving old
-  records and conversation branches.
-- **Interrupt and replan:** cancel current work, wait for cleanup, and send a new instruction.
+- **Automatic routing:** balance model capability, cost, speed, and privacy while maintaining
+  consistency through the same model configuration for tasks in the same domain and complexity tier.
+- **Context isolation:** exchange only necessary information between parent and child processes to
+  control context growth. Use summaries directly, with the full history available as a fallback.
+- **Traceability and recoverable history:** preserve execution history for later review and reuse.
+- **Live progress:** follow child responses and tool activity in real time, with expandable execution
+  history in the TUI.
 
 ## Setup
 
