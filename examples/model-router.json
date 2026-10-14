@@ -1,0 +1,44 @@
+{
+  "coding": {
+    "definition": "Code repository investigation, code review, and implementation.",
+    "parent_responsibility": [
+      "For implementation tasks, make sure the task you spawn is verifiable on your side;",
+      "  run relevant unit tests in your own execution environment;",
+      "  run the end-to-end tests defined by the task."
+    ],
+    "read-only": {
+      "medium": {
+        "model_alias": "your-provider/your-model-id",
+        "censored": false,
+        "thinking_level": "low",
+        "prompt": "Inspect the relevant code and explain your findings."
+      }
+    },
+    "read-write": {
+      "medium": {
+        "model_alias": "your-provider/your-model-id",
+        "censored": false,
+        "thinking_level": "medium",
+        "prompt": "Implement the delegated change and verify it with appropriate tests."
+      }
+    }
+  },
+  "multi-modal": {
+    "definition": "Multimedia recognition, generation-tool orchestration, and validation of generated media.",
+    "parent_responsibility": [
+      "Inspect generated images/videos for clarity, clearly recognizable objects,",
+      "  and the presence of the requested objects. Do not equate generation-tool success with",
+      "  an acceptable artifact."
+    ]
+  },
+  "research": {
+    "definition": "Information collection, reasoning, mathematics, and summarization. Code repo excluded.",
+    "parent_responsibility": [
+      "Check that findings answer the delegated question and are supported by the",
+      "  available evidence. Keep the task and its interpretation neutral and specific."
+    ]
+  },
+  "general": {
+    "definition": "Tasks outside these categories; normally the main thread."
+  }
+}

@@ -1,0 +1,13 @@
+node_modules/
+model-router-trajectory/
+*.tsbuildinfo
+.pi/
+
+# Local evaluation tooling, documentation, tests and generated reports.
+/docs/eval.md
+/docs/trajectory-stats.md
+/scripts/trajectory-stats.ts
+/test/runtime/trajectory-stats.test.ts
+/eval/
+/stats.csv
+/stats.json
