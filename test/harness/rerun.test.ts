@@ -371,6 +371,24 @@ test("cancellation waits for rerun cleanup and publishes an aborted result witho
   assert.equal(h.sent[0].options.triggerTurn, false);
 });
 
+test("rerun result details satisfy pi's JSON-only transcript contract", () => {
+  const h = harness();
+  const details = { nested: [null, true, 3, "text", { status: "ok" }] };
+  const result: any = {
+    role: "custom",
+    customType: RERUN_RESULT,
+    content: "result",
+    timestamp: 1,
+    details: { toolCallId: "call", resultDetails: details },
+  };
+  const projected = replayContext([h.call.message, result] as any);
+  assert.deepEqual((projected[1] as any).details, details);
+  for (const invalid of [NaN, Infinity, { nested: [undefined] }, () => {}]) {
+    result.details.resultDetails = invalid;
+    assert.throws(() => replayContext([h.call.message, result] as any), /expected JSON/);
+  }
+});
+
 test("compacted rerun results stay ordinary context when their original call is absent", () => {
   const messages: any[] = [
     {

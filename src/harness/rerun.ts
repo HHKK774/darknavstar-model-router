@@ -12,6 +12,20 @@ import type { LiveProgressResult } from "../tui/live.ts";
 export const RERUN_COMMAND = "router-rerun-last-spawn";
 export const RERUN_RESULT = "darknavstar-rerun-result";
 type Result = Awaited<ReturnType<ToolDefinition["execute"]>>;
+type ToolResult = Extract<ContextEvent["messages"][number], { role: "toolResult" }>;
+type JsonValue = NonNullable<ToolResult["details"]> | null;
+
+function isJsonValue(value: unknown): value is JsonValue {
+  if (value === null || typeof value === "string" || typeof value === "boolean") return true;
+  if (typeof value === "number") return Number.isFinite(value);
+  if (Array.isArray(value)) return value.every(isJsonValue);
+  return object(value) && Object.values(value).every(isJsonValue);
+}
+
+function resultDetails(value: unknown): ToolResult["details"] {
+  if (value === undefined || isJsonValue(value)) return value;
+  throw new Error("Invalid rerun result details: expected JSON");
+}
 interface Dependencies {
   store(ctx: ExtensionContext): RecordStore;
   busy(): boolean;
@@ -33,7 +47,7 @@ export function lastSpawn(ctx: ExtensionContext, store: RecordStore) {
     const calls = entry.message.content.filter((part) => part.type === "toolCall");
     if (!calls.some((part) => part.name === SPAWN_TOOL)) continue;
     const results = calls.map((call) => {
-      let preserved: Extract<ContextEvent["messages"][number], { role: "toolResult" }> | undefined;
+      let preserved: ToolResult | undefined;
       for (const next of branch.slice(i + 1)) {
         if (
           next.type === "message" &&
@@ -55,7 +69,7 @@ export function lastSpawn(ctx: ExtensionContext, store: RecordStore) {
               typeof next.content === "string"
                 ? [{ type: "text", text: next.content }]
                 : next.content,
-            details: next.details.resultDetails,
+            details: resultDetails(next.details.resultDetails),
             isError: next.details.isError === true,
             timestamp: Date.parse(next.timestamp),
           };
@@ -142,7 +156,7 @@ export function replayContext(messages: ContextEvent["messages"]): ContextEvent[
     return {
       role: "toolResult" as const,
       toolName: typeof details.toolName === "string" ? details.toolName : SPAWN_TOOL,
-      details: details.resultDetails,
+      details: resultDetails(details.resultDetails),
       toolCallId: details.toolCallId,
       content:
         typeof message.content === "string"

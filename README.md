@@ -17,7 +17,7 @@ A pi extension for routing tasks to configured sub-agents without changing the m
 
 ## Setup
 
-Requires Node.js 22.19+ and pi 1.x. Developed and tested against pi 1.1.0.
+Requires Node.js 22.19+ and pi 1.x. Developed and tested against pi 1.2.0.
 
 ```bash
 git clone https://github.com/HHKK774/darknavstar-model-router.git

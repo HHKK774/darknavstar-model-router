@@ -4,8 +4,14 @@
   "private": true,
   "type": "module",
   "description": "Configured sub-agent dispatch and browsable execution trajectories for pi",
-  "keywords": ["pi-package"],
-  "pi": { "extensions": ["./darknavstar-model-router.ts"] },
+  "keywords": [
+    "pi-package"
+  ],
+  "pi": {
+    "extensions": [
+      "./darknavstar-model-router.ts"
+    ]
+  },
   "scripts": {
     "test": "tsx --test test/*/*.test.ts",
     "check": "tsc --noEmit"
@@ -16,10 +22,21 @@
     "typebox": "*"
   },
   "devDependencies": {
-    "@earendil-works/pi-coding-agent": "0.85.1",
+    "@earendil-works/pi-coding-agent": "1.2.0",
+    "@earendil-works/pi-tui": "1.2.0",
     "@types/node": "^22.0.0",
     "tsx": "^4.22.1",
     "typescript": "^5.9.3"
   },
-  "engines": { "node": ">=22" }
+  "overrides": {
+    "@earendil-works/chord": "1.2.0",
+    "@earendil-works/pi-agent-core": "1.2.0",
+    "@earendil-works/pi-ai": "1.2.0",
+    "@earendil-works/pi-codemode": "1.2.0",
+    "@earendil-works/pi-mcp": "1.2.0",
+    "@earendil-works/pi-tui": "1.2.0"
+  },
+  "engines": {
+    "node": ">=22.19.0"
+  }
 }

@@ -225,7 +225,7 @@ export default function modelRouter(pi: ExtensionAPI) {
         This is a reminder from the framework, not user.
         ${ROUTING_REMINDER}
       </router-reminder>
-    `
+    `;
     return {
       messages: [
         ...messages,
@@ -302,7 +302,7 @@ export default function modelRouter(pi: ExtensionAPI) {
     },
     { additionalProperties: false },
   );
-  const spawnTool: ToolDefinition<typeof spawnParameters> = {
+  const spawnTool = {
     name: SPAWN_TOOL,
     label: "[darknavstar] Spawn model pool",
     description: [
@@ -314,7 +314,7 @@ export default function modelRouter(pi: ExtensionAPI) {
       "A fallback receipt means continue in the main loop; no automatic model fallback.",
     ].join(" "),
     parameters: spawnParameters,
-    async execute(_id, params, signal, onUpdate, ctx) {
+    async execute(_id, params, signal, onUpdate, ctx: ExtensionContext) {
       const state = ensure(ctx);
       const controller = new AbortController();
       if (interrupt?.isPending()) controller.abort();
@@ -388,7 +388,7 @@ export default function modelRouter(pi: ExtensionAPI) {
     },
     renderCall: renderSpawnCall,
     renderResult: renderSpawnResult,
-  };
+  } satisfies ToolDefinition<typeof spawnParameters>;
   pi.registerTool(spawnTool);
   if (!child && !childConfigError)
     rerun = registerRerunCommand(pi, {

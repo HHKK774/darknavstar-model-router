@@ -14,7 +14,9 @@ and browsable execution trajectories.
 - Only the receipt and final actions/result summary are returned to the main model by spawn.
 - No asynchronous jobs, child-process recovery, separate checkpoint system, or trust gate in P0.
 
-Implementation targets `@earendil-works/pi-coding-agent` 0.85.1.
+Implementation targets `@earendil-works/pi-coding-agent` 1.2.0 and Node.js 22.19+.
+Development dependencies pin the matching pi packages to 1.2.0 to avoid incompatible mixed-version
+SDK imports. Update these pins together when upgrading pi.
 
 ## Model pool
 
